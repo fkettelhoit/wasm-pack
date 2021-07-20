@@ -173,7 +173,12 @@ fn prebuilt_url(tool: &Tool, version: &str) -> Result<String, failure::Error> {
             _ => bail!("Unrecognized target!"),
         }
     } else if target::MACOS && target::x86_64 {
-        "x86_64-apple-darwin"
+        "x86_64-macos"
+    } else if target::MACOS && target::aarch64 {
+        match tool {
+            Tool::WasmOpt => "x86_64-macos",
+            _ => bail!("Unrecognized target!"),
+        }
     } else if target::WINDOWS && target::x86_64 {
         match tool {
             Tool::WasmOpt => "x86-windows",
@@ -206,7 +211,7 @@ fn prebuilt_url(tool: &Tool, version: &str) -> Result<String, failure::Error> {
         Tool::WasmOpt => {
             Ok(format!(
         "https://github.com/WebAssembly/binaryen/releases/download/{vers}/binaryen-{vers}-{target}.tar.gz",
-        vers = "version_90",
+        vers = "version_98",
         target = target,
             ))
         }
